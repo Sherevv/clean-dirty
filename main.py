@@ -7,7 +7,7 @@ import torch
 from torchvision import models
 
 from dataloaders import get_dataloaders
-from helpers import show_loss_acc, make_submission, acc_submission
+from helpers import show_loss_acc, make_submission
 from model import Model
 from prepare import prepare_image, make_train_val_test
 from transforms import get_transforms

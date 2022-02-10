@@ -46,12 +46,3 @@ def make_submission(test_predictions, test_img_paths, test_dir, p=0.5, ):
     submission_df.set_index('id', inplace=True)
 
     submission_df.to_csv('submission.csv')
-
-
-def acc_submission(test_predictions, test_img_paths, target_file):
-    df = pd.DataFrame.from_dict({'id': test_img_paths, 'label0': test_predictions, 'label': ''})
-    submission_pre = pd.read_csv(target_file)
-    for t in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
-        df['label'] = df['label0'].map(lambda pred: 'dirty' if pred > t else 'cleaned')
-
-        print(t, accuracy_score(df['label'], submission_pre['label']))
