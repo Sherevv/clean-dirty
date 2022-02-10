@@ -36,15 +36,14 @@ def get_transforms():
         transforms.Compose([
                                transforms.RandomHorizontalFlip(),
                                transforms.RandomVerticalFlip(),
-                               transforms.RandomRotation(180, fill=0),
+                               transforms.RandomRotation(180),
                            ] + base_transform),
         transforms.Compose([
                                transforms.RandomHorizontalFlip(),
                                transforms.RandomVerticalFlip(),
-                               transforms.RandomRotation(180, fill=0),
+                               transforms.RandomRotation(180),
                                Crop(crop_size),
                            ] + base_transform),
-        #     transforms.Compose([]+base_transform),
         transforms.Compose([
                                transforms.RandomHorizontalFlip(p=1),
                                Crop(crop_size),
@@ -54,11 +53,11 @@ def get_transforms():
                                Crop(crop_size),
                            ] + base_transform),
         transforms.Compose([
-                               transforms.RandomRotation(60, fill=0),
+                               transforms.RandomRotation(60),
                                Crop(crop_size),
                            ] + base_transform),
         transforms.Compose([
-                               transforms.RandomRotation(60, fill=0),
+                               transforms.RandomRotation(60),
                                transforms.RandomHorizontalFlip(),
                                transforms.RandomVerticalFlip(),
                                Crop(crop_size),
@@ -70,59 +69,41 @@ def get_transforms():
         transforms.Compose([
                                Crop(crop_size),
                            ] + base_transform),
-        #     transforms.Compose([
-        #         transforms.RandomPerspective(distortion_scale=0.1, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
-        #     ]+base_transform),
         transforms.Compose([
                                transforms.ColorJitter(hue=(-0.5, 0.5)),
-                               transforms.RandomRotation(60, fill=0),
-                               # transforms.RandomPerspective(distortion_scale=0.09, p=0.75, interpolation=InterpolationMode.NEAREST, fill=0),
-                               # transforms.CenterCrop(crop_size),
+                               transforms.RandomRotation(60),
                                transforms.RandomVerticalFlip(),
                                transforms.RandomHorizontalFlip(),
                            ] + base_transform),
         transforms.Compose([
                                transforms.ColorJitter(hue=(-0.5, 0.5)),
-                               transforms.RandomRotation(180, fill=0),
-                               # transforms.RandomPerspective(distortion_scale=0.19, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
+                               transforms.RandomRotation(180),
                                transforms.CenterCrop(crop_size),
                                transforms.RandomVerticalFlip(),
                                transforms.RandomHorizontalFlip(),
                            ] + base_transform),
-        #         transforms.Compose([
-        #         transforms.ColorJitter(hue=(-0.5,0.5)),
-        #         transforms.RandomRotation(180, fill=0),
-        #         #transforms.CenterCrop(crop_size),
-        #         transforms.RandomPerspective(distortion_scale=0.09, p=0.75, interpolation=InterpolationMode.NEAREST, fill=0),
-        #         transforms.RandomVerticalFlip(),
-        #         transforms.RandomHorizontalFlip(),
-        #     ]+base_transform),
         transforms.Compose([
                                transforms.CenterCrop(crop_size),
-                               # transforms.RandomPerspective(distortion_scale=0.1, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
                            ] + base_transform),
     ]
 
     val_transforms = [
         transforms.Compose([
                                transforms.ColorJitter(hue=(-0.5, 0.5)),
-                               transforms.RandomRotation(180, fill=0),
-                               # transforms.RandomPerspective(distortion_scale=0.19, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
+                               transforms.RandomRotation(180),
                                transforms.CenterCrop(crop_size),
                                transforms.RandomVerticalFlip(),
                                transforms.RandomHorizontalFlip(),
                            ] + base_transform),
         transforms.Compose([
                                transforms.ColorJitter(hue=(-0.5, 0.5)),
-                               transforms.RandomRotation(180, fill=0),
-                               # transforms.RandomPerspective(distortion_scale=0.19, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
+                               transforms.RandomRotation(180),
                                transforms.RandomVerticalFlip(),
                                transforms.RandomHorizontalFlip(),
                            ] + base_transform),
         transforms.Compose([
                                transforms.ColorJitter(hue=(-0.5, 0.5)),
-                               transforms.RandomRotation(180, fill=0),
-                               # transforms.RandomPerspective(distortion_scale=0.19, p=0.8, interpolation=InterpolationMode.NEAREST, fill=0),
+                               transforms.RandomRotation(180),
                                transforms.RandomVerticalFlip(),
                                transforms.RandomHorizontalFlip(),
                            ] + base_transform),
@@ -130,4 +111,3 @@ def get_transforms():
     test_transforms = transforms.Compose([Crop(crop_size), ] + base_transform)
 
     return train_transforms, val_transforms, test_transforms
-

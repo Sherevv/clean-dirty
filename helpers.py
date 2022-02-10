@@ -1,18 +1,5 @@
-# Input data files are available in the "../input/" directory.
+import os
 
-# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
-
-# if INIT:
-#
-#     print(os.listdir("../input"))
-#
-#     # Any results you write to the current directory are saved as output.
-#     with zipfile.ZipFile('../input/platesv2/plates.zip', 'r') as zip_obj:
-#         # Extract all the contents of zip file in current directory
-#         zip_obj.extractall('/kaggle/working/')
-#
-#     print('After zip extraction:')
-#     print(os.listdir("/kaggle/working/"))
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -50,11 +37,11 @@ def show_loss_acc(loss, acc):
     plt.grid(linestyle='--', linewidth=0.5, color='.7')
 
 
-def make_submission(test_predictions, test_img_paths, p=0.5):
+def make_submission(test_predictions, test_img_paths, test_dir, p=0.5, ):
 
     submission_df = pd.DataFrame.from_dict({'id': test_img_paths, 'label': test_predictions})
     submission_df['label'] = submission_df['label'].map(lambda pred: 'dirty' if pred > p else 'cleaned')
-    submission_df['id'] = submission_df['id'].str.replace('plates/test/unknown/', '')
+    submission_df['id'] = submission_df['id'].str.replace(os.path.join(test_dir, 'unknown/'), '')
     submission_df['id'] = submission_df['id'].str.replace('.jpg', '')
     submission_df.set_index('id', inplace=True)
 

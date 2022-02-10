@@ -1,12 +1,11 @@
 import numpy as np
 import torch
 from tqdm import tqdm
+from helpers import acc_submission
 
 
 class Model:
-    def __init__(self, model, loss, optimizer, scheduler, num_epochs, ):
-        # Disable grad for all conv layers
-
+    def __init__(self, model, loss, optimizer, scheduler, num_epochs, show = True):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model = model.to(self.device)
         self.loss = loss
@@ -15,13 +14,15 @@ class Model:
         self.num_epochs = num_epochs
         self.loss_hist = {'train': [], 'val': []}
         self.acc_hist = {'train': [], 'val': []}
+        self.show = show
 
-    def fit(self, train_dataloader, val_dataloader):
+    def fit(self, train_dataloader, val_dataloader, test_dataloader):
         self.loss_hist = {'train': [], 'val': []}
         self.acc_hist = {'train': [], 'val': []}
 
         for epoch in range(self.num_epochs):
-            print('Epoch {}/{}:'.format(epoch, self.num_epochs - 1), flush=True)
+            if self.show:
+                print('Epoch {}/{}:'.format(epoch, self.num_epochs - 1), flush=True)
 
             # Each epoch has a training and validation phase
             for phase in ['train', 'val']:
@@ -39,7 +40,7 @@ class Model:
                 running_acc = 0.
 
                 # Iterate over data.
-                for inputs, labels in tqdm(dataloader):
+                for inputs, labels in dataloader:
                     inputs = inputs.to(self.device)
                     labels = labels.to(self.device)
 
@@ -65,8 +66,8 @@ class Model:
 
                 epoch_loss = running_loss / len(dataloader)
                 epoch_acc = running_acc / len(dataloader)
-
-                print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc), flush=True)
+                if self.show:
+                    print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc), flush=True)
 
                 self.loss_hist[phase].append(epoch_loss)
                 self.acc_hist[phase].append(epoch_acc)
@@ -81,14 +82,13 @@ class Model:
         for inputs, labels, paths in tqdm(test_dataloader):
             inputs = inputs.to(self.device)
             labels = labels.to(self.device)
-            with torch.set_grad_enabled(False):
+            with torch.no_grad():
                 preds = self.model(inputs)
             test_predictions.append(
                 torch.nn.functional.softmax(preds, dim=1)[:, 1].data.cpu().numpy())
             test_img_paths.extend(paths)
 
-        return np.concatenate(test_predictions)
-
+        return np.concatenate(test_predictions), test_img_paths
 
 
 
